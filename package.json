@@ -18,8 +18,17 @@
   "keywords": [
     "toolchain",
     "node",
-    "build-log"
+    "build-log",
+    "upload"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/1442916418/yss-toolchain"
+  },
+  "bugs": {
+    "url": "https://github.com/1442916418/yss-toolchain/issues"
+  },
+  "license": "MIT",
   "dependencies": {
     "inquirer": "^8.2.1",
     "commander": "~9.2.0",
@@ -37,7 +46,6 @@
     "cross-env": "^7.0.3"
   },
   "author": "yushuisheng",
-  "license": "ISC",
   "files": [
     "dist",
     "bin"
