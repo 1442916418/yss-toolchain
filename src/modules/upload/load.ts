@@ -30,7 +30,7 @@ class Load {
     log(
       chalk.magenta`username: ${
         params.username
-      } password: ${!!params.password} privateKeyPath ${!!params.privateKeyPath}\n`
+      } password: ${!!params.password} privateKeyPath: ${!!params.privateKeyPath}\n`
     )
 
     this.params = params

@@ -1,0 +1,11 @@
+{
+  "yss-toolchain": {
+    "host": "111.00.00.111",
+    "pathUrl": "/file",
+    "username": "root",
+    "password": "123456",
+    "port": 22,
+    "environment": "production",
+    "distName": "dist"
+  }
+}

@@ -1,6 +1,6 @@
 import inquirer from 'inquirer'
 import chalk from 'chalk'
-import { sep } from 'path'
+import { sep, isAbsolute, join } from 'path'
 import fs from 'fs'
 
 import { uploadParamsType, uploadConfigDataType } from '../../types/upload'
@@ -13,7 +13,7 @@ const log = console.log
 const list = [
   {
     type: 'confirm',
-    message: '是否确认更新',
+    message: '是否确认更新?',
     name: 'isUpdate',
     default: false,
     prefix: '提示:'
@@ -86,6 +86,8 @@ class Upload {
       } else {
         result = data.environment === environment ? data : void 0
       }
+    } else {
+      throw new Error(`upload.json file. No [${params.projectName}] project config`)
     }
 
     if (result) {
@@ -129,8 +131,10 @@ class Upload {
 
     if (!path) return void 0
 
+    const absolutePath = isAbsolute(path) ? path : join(cwd, path)
+
     try {
-      const data = fs.readFileSync(path, { encoding: 'utf8' })
+      const data = fs.readFileSync(absolutePath, { encoding: 'utf8' })
 
       return data && typeof data === 'string' ? JSON.parse(data) : void 0
     } catch (error) {

@@ -8,7 +8,7 @@
    1. [日志模块](#build-log)
    2. [上传模块](#upload)
 
-### [安装](#install)
+## [安装](#install)
 
 <a name="install"></a>
 
@@ -16,11 +16,13 @@
 npm install --save-dev yss-toolchain
 ```
 
-### [模块](#module)
+---
+
+## [模块](#module)
 
 <a name="module"></a>
 
-#### [日志模块](#build-log)
+### [日志模块](#build-log)
 
 <a name="build-log"></a>
 
@@ -37,9 +39,9 @@ y-cli build-log
 | --author(-a)            | false | 作者   | array  | ['Tom'] | -     |
 | --environment(-e)       | false | 环境   | string | 'development'   | -     |
 | --environmentSuffix(-s) | false | 分支后缀 | string | 'dev'           | 和 environment 对应     |
-| --project(-p)           | false | 项目   | string | 'null'          | 多页面使用 |
+| --project(-p)           | false | 多页面   | string | 'null'          | 多页面使用，自定义多页面名称，不是项目项目 |
 
-##### **初始版本号**  
+#### **初始版本号**  
 
 - **单页面 package.json**  
 
@@ -79,16 +81,16 @@ y-cli build-log -b dev -e development -s dev -p a
 
 ---
 
-#### [上传模块](#upload)
+### [上传模块](#upload)
 
 <a name="upload"></a>
 
 > 自动上传并更新服务端包(node-ssh)  
-> 需要先通过 cross-env 设置配置文件路径 UPLOAD_CONFIG_PATH  
+> 需要先通过 cross-env 设置配置文件路径 UPLOAD_CONFIG_PATH(相对路径或绝对路径)  
 > 服务端需要在目标目录下添加 unzip.sh 文件，用于解压压缩包
 
 ```shell
-cross-env UPLOAD_CONFIG_PATH=D:\\upload.dev.json y-cli upload
+cross-env UPLOAD_CONFIG_PATH=test\\upload.prod.json y-cli upload
 ```
 
 #### y-cli upload
@@ -100,9 +102,14 @@ cross-env UPLOAD_CONFIG_PATH=D:\\upload.dev.json y-cli upload
 
 #### UPLOAD_CONFIG_PATH  
 
-- JSON key 是项目名，必须和 **package.json** 的 **name** 相同
+`JSON key`
 
-- JSON value 如下：
+| 参数                      | 是否必填  | 名称   | 类型     | 默认值             | 说明    |
+| ----------------------- | ----- | ---- | ------ | --------------- | ----- |
+| projectName       | true | 项目名称   | string | -   | package.json 的 name
+| MultiPageBuildName       | true | 多页面名称   | string | -   | 自定义多页面名称或和打包目录文件名称相同
+  
+`JSON value`
   
 | 参数                      | 是否必填  | 名称   | 类型     | 默认值             | 说明    |
 | ----------------------- | ----- | ---- | ------ | --------------- | ----- |
@@ -116,22 +123,22 @@ cross-env UPLOAD_CONFIG_PATH=D:\\upload.dev.json y-cli upload
 | distName | true | 打包目录 | string | 'dist'           | 需要上传并压缩的文件夹名称     |
 | isMultiPage | false | 多页面 | boolean | undefined           | 一个项目下，多页面使用     |
 
-- UPLOAD_CONFIG_PATH 配置文件 JSON 示例
+- UPLOAD_CONFIG_PATH 配置文件示例
 
 ```json
 {
-  "test": {
+ "projectName": {
     "host": "111.00.00.111",
     "pathUrl": "/file",
     "username": "root",
-    "password": "MTIzNDU2",
+    "password": "123456",
     "port": 22,
     "environment": "production",
     "distName": "dist"
   },
-  "test": {
+  "projectName": {
     "isMultiPage": true,
-    "test-1": {
+    "MultiPageBuildName": {
       "host": "111.00.00.111",
       "pathUrl": "/file/test1",
       "username": "root",
@@ -140,7 +147,7 @@ cross-env UPLOAD_CONFIG_PATH=D:\\upload.dev.json y-cli upload
       "environment": "production",
       "distName": "test-1"
     },
-    "admin-2": {
+    "MultiPageBuildName": {
       "host": "111.00.00.111",
       "pathUrl": "/file/test2",
       "username": "root",
