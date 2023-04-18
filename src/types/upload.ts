@@ -9,6 +9,8 @@ export interface uploadParamsType {
   distName: string
   /** 项目路径 */
   path?: string
+  /** 是否直接更新(默认 false) */
+  isUpdate: boolean
 }
 
 export interface uploadConfigDataType extends uploadParamsType {

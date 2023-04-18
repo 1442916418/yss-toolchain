@@ -20,6 +20,7 @@ program
   .description('Upload and update the server software package.')
   .option('-e, --environment <value>', 'Project packaging environment.', 'development')
   .option('-d, --directory <value>', 'Project Packaging Directory.', 'dist')
+  .option('-u, --update <value>', 'Project packaging is automatically updated.', 'false')
   .action((params) => {
     handleUploadCommand(params)
   })
@@ -61,7 +62,8 @@ function handleUploadCommand(params) {
 
     dist.Upload.init({
       environment: params.environment,
-      distName: params.directory
+      distName: params.directory,
+      isUpdate: update === 'true'
     })
   } catch (error) {
     throw new Error(`\nhandleUploadCommand error:${error}`)

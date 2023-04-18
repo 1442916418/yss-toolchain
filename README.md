@@ -99,6 +99,7 @@ cross-env UPLOAD_CONFIG_PATH=test\\upload.prod.json y-cli upload
 | ----------------------- | ----- | ---- | ------ | --------------- | ----- |
 | --environment(-e)       | false | 环境   | string | 'development'   | 'development' 或 'production' 二选一
 | --directory(-d) | false | 打包目录 | string | 'dist'           | 需要上传的文件夹名称     |
+| --update(-u) | false | 更新 | string | 'false'           | 是否自动更新     |
 
 #### UPLOAD_CONFIG_PATH  
 
@@ -158,6 +159,12 @@ cross-env UPLOAD_CONFIG_PATH=test\\upload.prod.json y-cli upload
     }
   }
 }
+```
+
+- **示例**
+
+```shell
+cross-env UPLOAD_CONFIG_PATH=..\\upload.dev.json y-cli upload -e production -d dist -u true
 ```
 
 - unzip.sh 示例

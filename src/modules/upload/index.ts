@@ -25,37 +25,49 @@ class Upload {
     this.handleConfigFilePathCheck()
 
     if (!this.handleParamsCheck(params)) {
-      log(chalk.red`\nCommand basic configuration parameter error.\n`)
+      log(chalk.red`\n基本配置参数错误.\n`)
       process.exit(0)
     }
 
     params = this.handleParams(params)
 
     log(chalk.bgBlue`\n源信息`)
-    log(chalk.blue`项目: ${params?.projectName}  环境: ${params.environment}  目录: ${params.distName}`)
-    log(chalk.blue`路径: ${params?.path}\n`)
+    log(chalk.blue`项目: ${params?.projectName} 环境: ${params.environment} 目录: ${params.distName}`)
+    log(chalk.blue`是否直接更新: ${params?.isUpdate ?? false} 路径: ${params?.path}\n`)
 
-    inquirer
-      .prompt(list)
-      .then((res) => {
-        if (res && res.isUpdate) {
-          const config = this.getConfigData(params)
+    // 如果直接更新，不提示，否则提示选择是否需要更新
+    if (params?.isUpdate) {
+      const config = this.getConfigData(params)
 
-          if (config) {
-            Load.init(config)
+      if (config) {
+        Load.init(config)
+      } else {
+        log(chalk.yellow`\n无配置!\n`)
+        process.exit(0)
+      }
+    } else {
+      inquirer
+        .prompt(list)
+        .then((res) => {
+          if (res && res.isUpdate) {
+            const config = this.getConfigData(params)
+
+            if (config) {
+              Load.init(config)
+            } else {
+              log(chalk.yellow`\n无配置!\n`)
+              process.exit(0)
+            }
           } else {
-            log(chalk.yellow`\n无配置!\n`)
+            log(chalk.yellow`\n不更新!\n`)
             process.exit(0)
           }
-        } else {
-          log(chalk.yellow`\n不更新!\n`)
+        })
+        .catch((err) => {
+          log(chalk.red(`Upload init() inquirer error: \n ${err}`))
           process.exit(0)
-        }
-      })
-      .catch((err) => {
-        log(chalk.red(`Upload init() inquirer error: \n ${err}`))
-        process.exit(0)
-      })
+        })
+    }
   }
 
   /**
@@ -158,11 +170,6 @@ class Upload {
    */
   private static handleParamsCheck({ environment, distName }: uploadParamsType) {
     let result = true
-
-    if (!environment) {
-      log(chalk.yellow('请传入项目环境'))
-      result = false
-    }
 
     if (!PROJECT_ENVIRONMENT.includes(environment)) {
       log(chalk.yellow(`请传入正确项目环境: ${PROJECT_ENVIRONMENT.join(' || ')}`))
