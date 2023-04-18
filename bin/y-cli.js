@@ -63,7 +63,7 @@ function handleUploadCommand(params) {
     dist.Upload.init({
       environment: params.environment,
       distName: params.directory,
-      isUpdate: update === 'true'
+      isUpdate: params.update === 'true'
     })
   } catch (error) {
     throw new Error(`\nhandleUploadCommand error:${error}`)
