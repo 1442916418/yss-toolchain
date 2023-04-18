@@ -3,6 +3,8 @@
 const program = require('commander')
 const chalk = require('chalk')
 
+program.version(require('../package').version)
+
 program
   .command('build-log')
   .description('Create packaging log.')
