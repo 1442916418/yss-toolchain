@@ -172,5 +172,21 @@ cross-env UPLOAD_CONFIG_PATH=..\\upload.dev.json y-cli upload -e production -d d
 ```shell
 #!/bin/bash
 
+# 当前脚本的文件名
+script_name=$(basename "$0")
+
+# 不可删除的文件夹名称数组，按需添加多个文件夹名称
+protected_folders=("dist.zip")
+
+# 构建 find 命令的排除条件
+exclude_conditions=(! -name "$script_name")
+for folder in "${protected_folders[@]}"; do
+  exclude_conditions+=(! -name "$folder")
+done
+
+# 删除当前目录下的所有文件和文件夹，除了这个脚本本身和不可删除的文件夹
+find . -mindepth 1 -maxdepth 1 "${exclude_conditions[@]}" -exec rm -rf {} +
+
+# 解压 dist.zip 文件，并覆盖现有文件
 unzip -o dist.zip
 ```
